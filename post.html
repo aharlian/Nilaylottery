@@ -121,6 +121,331 @@
         <div class="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 text-center animate-fadeIn">
             <div class="text-6xl mb-4">🎉</div>
             <h3 class="text-2xl font-bold mb-4 text-green-600">ثبت نام موفقیت آمیز!</h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-6">شماره قرعه کشی شما:</p>
+            <div class="lottery-code mb-6" id="generatedCode">1</div>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">این شماره را یادداشت کنید. نتایج قرعه کشی به زودی اعلام خواهد شد.</p>
+            <button onclick="closeSuccessModal()" class="bg-gradient-to-r from-primary to-primary-dark text-white px-8 py-3 rounded-lg hover:from-primary-dark hover:to-purple-700 transition-all duration-300">
+                تأیید
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        let currentLottery = null;
+
+        function loadLotteryDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const lotteryId = urlParams.get('id');
+            
+            if (!lotteryId) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const lotteries = JSON.parse(localStorage.getItem('lotteries') || '[]');
+            currentLottery = lotteries.find(l => l.id === lotteryId);
+            
+            if (!currentLottery) {
+                document.getElementById('lotteryDetails').innerHTML = `
+                    <div class="text-center py-12">
+                        <div class="text-6xl mb-4">❌</div>
+                        <h2 class="text-2xl font-bold mb-4">قرعه کشی یافت نشد</h2>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6">قرعه کشی مورد نظر وجود ندارد یا حذف شده است.</p>
+                        <button onclick="goBack()" class="bg-gradient-to-r from-primary to-primary-dark text-white px-6 py-3 rounded-lg">
+                            بازگشت به صفحه اصلی
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]')
+                .filter(p => p.lotteryId === lotteryId);
+            
+            const progress = (participants.length / currentLottery.capacity) * 100;
+            const remainingSlots = currentLottery.capacity - participants.length;
+
+            document.getElementById('lotteryDetails').innerHTML = `
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Lottery Info -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+                        <div class="text-center mb-8">
+                            <img src="${currentLottery.image}" alt="${currentLottery.name}" 
+                                 class="w-full h-64 object-cover rounded-xl mx-auto mb-6 animate-float">
+                            <h2 class="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                                قرعه کشی ${currentLottery.name}
+                            </h2>
+                            <p class="text-gray-600 dark:text-gray-400 text-lg">${currentLottery.description}</p>
+                        </div>
+
+                        <!-- Stats -->
+                        <div class="grid grid-cols-2 gap-4 mb-8">
+                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 p-4 rounded-xl text-center">
+                                <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">${currentLottery.capacity}</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400">کل ظرفیت</div>
+                            </div>
+                            <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 p-4 rounded-xl text-center">
+                                <div class="text-2xl font-bold text-green-600 dark:text-green-400">${participants.length}</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400">شرکت کننده</div>
+                            </div>
+                            <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800 p-4 rounded-xl text-center">
+                                <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">${currentLottery.pricePerShare.toLocaleString()}</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400">تومان</div>
+                            </div>
+                            <div class="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900 dark:to-orange-800 p-4 rounded-xl text-center">
+                                <div class="text-2xl font-bold text-orange-600 dark:text-orange-400">${remainingSlots}</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400">باقی مانده</div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="mb-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium">پیشرفت قرعه کشی</span>
+                                <span class="text-sm font-medium text-primary">${progress.toFixed(1)}%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-3 dark:bg-gray-700">
+                                <div class="bg-gradient-to-r from-primary to-purple-600 h-3 rounded-full transition-all duration-1000" 
+                                     style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+
+                        ${remainingSlots > 0 ? `
+                            <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                                <div class="flex items-center space-x-reverse space-x-2">
+                                    <i class="fas fa-check-circle text-green-500"></i>
+                                    <span class="text-green-700 dark:text-green-300 font-semibold">
+                                        قرعه کشی فعال است و می‌توانید شرکت کنید
+                                    </span>
+                                </div>
+                            </div>
+                        ` : `
+                            <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                                <div class="flex items-center space-x-reverse space-x-2">
+                                    <i class="fas fa-times-circle text-red-500"></i>
+                                    <span class="text-red-700 dark:text-red-300 font-semibold">
+                                        ظرفیت قرعه کشی تکمیل شده است
+                                    </span>
+                                </div>
+                            </div>
+                        `}
+                    </div>
+
+                    <!-- Registration Form -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+                        <h3 class="text-2xl font-bold mb-6 text-center">فرم شرکت در قرعه کشی</h3>
+                        
+                        ${remainingSlots > 0 ? `
+                            <form id="registrationForm" class="space-y-6">
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">نام</label>
+                                        <input type="text" id="firstName" required 
+                                               class="input-focus w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base"
+                                               placeholder="نام خود را وارد کنید">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">نام خانوادگی</label>
+                                        <input type="text" id="lastName" required 
+                                               class="input-focus w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base"
+                                               placeholder="نام خانوادگی خود را وارد کنید">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">شهر سکونت</label>
+                                    <input type="text" id="city" required 
+                                           class="input-focus w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base"
+                                           placeholder="شهر سکونت خود را وارد کنید">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">شماره موبایل فعال</label>
+                                    <input type="tel" id="phone" required 
+                                           class="input-focus w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base"
+                                           placeholder="09xxxxxxxxx">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">آیدی اینستاگرام</label>
+                                    <input type="text" id="instagram" 
+                                           class="input-focus w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base"
+                                           placeholder="@username (اختیاری)">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">درگاه پرداخت</label>
+                                    <select id="paymentGateway" required 
+                                            class="input-focus w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base">
+                                        <option value="">انتخاب درگاه پرداخت</option>
+                                        <option value="zarinpal">زرین پال</option>
+                                        <option value="parsian">پارسیان</option>
+                                        <option value="mellat">ملت</option>
+                                        <option value="saderat">صادرات</option>
+                                    </select>
+                                </div>
+
+                                <!-- Price Summary -->
+                                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-semibold">مبلغ قابل پرداخت:</span>
+                                        <span class="text-2xl font-bold text-primary">${currentLottery.pricePerShare.toLocaleString()} تومان</span>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="w-full bg-gradient-to-r from-primary to-primary-dark text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-primary-dark hover:to-purple-700 transition-all duration-300">
+                                    <i class="fas fa-credit-card ml-2"></i>
+                                    پرداخت و شرکت در قرعه کشی
+                                </button>
+                            </form>
+                        ` : `
+                            <div class="text-center py-12">
+                                <div class="text-6xl mb-4">😔</div>
+                                <h4 class="text-xl font-bold mb-4">متأسفانه ظرفیت تکمیل شده</h4>
+                                <p class="text-gray-600 dark:text-gray-400">این قرعه کشی به ظرفیت کامل رسیده است</p>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+
+            if (remainingSlots > 0) {
+                document.getElementById('registrationForm').addEventListener('submit', handleFormSubmit);
+            }
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const city = document.getElementById('city').value;
+            const phone = document.getElementById('phone').value;
+            const instagram = document.getElementById('instagram').value;
+            const paymentGateway = document.getElementById('paymentGateway').value;
+
+            if (!firstName || !lastName || !city || !phone || !paymentGateway) {
+                showAlert('لطفا تمام فیلدهای ضروری را پر کنید', 'error');
+                return;
+            }
+
+            // Validate phone number
+            if (!/^09\d{9}$/.test(phone)) {
+                showAlert('شماره موبایل وارد شده صحیح نیست', 'error');
+                return;
+            }
+
+            // Generate sequential lottery code
+            const lotteryCode = generateLotteryCode();
+
+            // Create participant object
+            const participant = {
+                id: Date.now().toString(),
+                lotteryId: currentLottery.id,
+                firstName: firstName,
+                lastName: lastName,
+                city: city,
+                phone: phone,
+                instagram: instagram,
+                paymentGateway: paymentGateway,
+                lotteryCode: lotteryCode,
+                amount: currentLottery.pricePerShare,
+                createdAt: new Date().toLocaleDateString('fa-IR')
+            };
+
+            // Save participant
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+            participants.push(participant);
+            localStorage.setItem('participants', JSON.stringify(participants));
+
+            // Show success modal
+            document.getElementById('generatedCode').textContent = lotteryCode;
+            document.getElementById('successModal').classList.remove('hidden');
+
+            // Add activity
+            addActivity(`${firstName} ${lastName} در قرعه کشی ${currentLottery.name} شرکت کرد - شماره: ${lotteryCode}`);
+        }
+
+        function generateLotteryCode() {
+            // Get current participants for this lottery
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]')
+                .filter(p => p.lotteryId === currentLottery.id);
+            
+            // Next sequential number
+            return (participants.length + 1).toString();
+        }
+
+        function addActivity(activity) {
+            const activities = JSON.parse(localStorage.getItem('activities') || '[]');
+            activities.unshift({
+                text: activity,
+                time: new Date().toLocaleString('fa-IR'),
+                timestamp: Date.now()
+            });
+            
+            // Keep only last 10 activities
+            if (activities.length > 10) {
+                activities.splice(10);
+            }
+            
+            localStorage.setItem('activities', JSON.stringify(activities));
+        }
+
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `fixed top-4 left-4 p-4 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-500 text-white' :
+                type === 'error' ? 'bg-red-500 text-white' :
+                'bg-blue-500 text-white'
+            }`;
+            alertDiv.textContent = message;
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+            goBack();
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLotteryDetails();
+        });
+    </script>
+</body>
+</html>
+                <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto"></div>
+                <p class="mt-4 text-gray-600 dark:text-gray-400">در حال بارگذاری...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4 text-center animate-fadeIn">
+            <div class="text-6xl mb-4">🎉</div>
+            <h3 class="text-2xl font-bold mb-4 text-green-600">ثبت نام موفقیت آمیز!</h3>
             <p class="text-gray-600 dark:text-gray-400 mb-6">کد قرعه کشی شما:</p>
             <div class="lottery-code mb-6" id="generatedCode">LC-12345</div>
             <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">این کد را یادداشت کنید. نتایج قرعه کشی به زودی اعلام خواهد شد.</p>
