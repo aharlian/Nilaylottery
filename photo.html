@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدیریت تصاویر - قرعه کشی خودرو</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'vazir': ['Vazirmatn', 'sans-serif']
+                    },
+                    colors: {
+                        primary: '#5D5CDE',
+                        'primary-dark': '#4B4BC7'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .image-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(93, 92, 222, 0.15);
+        }
+        
+        .dark .image-card {
+            background: linear-gradient(145deg, #1f2937 0%, #111827 100%);
+        }
+    </style>
+</head>
+<body class="font-vazir bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    
+    <header class="bg-white dark:bg-gray-800 shadow-lg mb-8">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                    مدیریت تصاویر
+                </h1>
+                <button onclick="goToAdmin()" class="bg-gradient-to-r from-primary to-primary-dark text-white px-4 py-2 rounded-lg hover:from-primary-dark hover:to-purple-700 transition-all duration-300">
+                    <i class="fas fa-arrow-right ml-2"></i>
+                    بازگشت به پنل ادمین
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4">
+        <!-- Storage Info -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 mb-8 shadow-lg">
+            <h2 class="text-xl font-bold mb-4">اطلاعات ذخیره سازی</h2>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <div class="text-2xl font-bold text-blue-600 dark:text-blue-400" id="totalImages">0</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">کل تصاویر</div>
+                </div>
+                <div class="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                    <div class="text-2xl font-bold text-green-600 dark:text-green-400" id="storageUsed">0 KB</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">فضای استفاده شده</div>
+                </div>
+                <div class="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                    <div class="text-2xl font-bold text-purple-600 dark:text-purple-400" id="activeImages">0</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">تصاویر فعال</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Images Grid -->
+        <div id="imagesContainer" class="image-grid">
+            <!-- Images will be loaded here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="text-center py-12">
+            <div class="text-6xl mb-4">📷</div>
+            <h3 class="text-2xl font-bold mb-4">هنوز تصویری آپلود نشده</h3>
+            <p class="text-gray-600 dark:text-gray-400">تصاویر قرعه کشی‌ها از پنل ادمین در اینجا نمایش داده می‌شوند</p>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        function loadImages() {
+            const photos = JSON.parse(localStorage.getItem('photos') || '{}');
+            const lotteries = JSON.parse(localStorage.getItem('lotteries') || '[]');
+            const container = document.getElementById('imagesContainer');
+            const emptyState = document.getElementById('emptyState');
+            
+            const photoKeys = Object.keys(photos);
+            
+            if (photoKeys.length === 0) {
+                emptyState.style.display = 'block';
+                container.style.display = 'none';
+                updateStats(0, 0, 0);
+                return;
+            }
+
+            emptyState.style.display
