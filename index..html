@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قرعه کشی خودرو - صفحه اصلی</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'vazir': ['Vazirmatn', 'sans-serif']
+                    },
+                    colors: {
+                        primary: '#5D5CDE',
+                        'primary-dark': '#4B4BC7',
+                        'bg-light': '#FFFFFF',
+                        'bg-dark': '#181818'
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s infinite',
+                        'bounce-slow': 'bounce 2s infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            50%, 100% { transform: translateX(100%); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(93, 92, 222, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(93, 92, 222, 0.8), 0 0 30px rgba(93, 92, 222, 0.6); }
+        }
+        
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .car-image {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .car-image:hover {
+            transform: scale(1.1) rotate(3deg);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark .glass-effect {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shine 3s infinite;
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(93, 92, 222, 0.1), transparent);
+            transition: all 0.5s;
+        }
+        
+        .card-hover:hover::before {
+            left: 100%;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 30px 60px -12px rgba(93, 92, 222, 0.4);
+        }
+        
+        .dark .card-hover:hover {
+            box-shadow: 0 30px 60px -12px rgba(93, 92, 222, 0.6);
+        }
+        
+        .lottery-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dark .lottery-card {
+            background: linear-gradient(145deg, #1f2937 0%, #111827 100%);
+        }
+        
+        .lottery-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(93, 92, 222, 0.1) 0%, transparent 70%);
+            animation: glow 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        .stat-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f1f5f9 100%);
+            border: 1px solid rgba(93, 92, 222, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .dark .stat-card {
+            background: linear-gradient(145deg, #374151 0%, #1f2937 100%);
+            border: 1px solid rgba(93, 92, 222, 0.2);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(93, 92, 222, 0.15);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 2s infinite;
+        }
+        
+        .car-showcase {
+            animation: slideInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body class="font-vazir bg-bg-light dark:bg-bg-dark text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    
+    <!-- Header -->
+    <header class="sticky top-0 z-50 glass-effect">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex items-center space-x-reverse space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center animate-pulse-slow">
+                        <i class="fas fa-car text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                            قرعه کشی خودرو
+                        </h1>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">بهترین فرصت برای خرید خودرو</p>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="hidden md:flex items-center space-x-reverse space-x-8">
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">صفحه اصلی</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">قرعه کشی ها</a>
+                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">تماس با ما</a>
+                </nav>
+                
+                <!-- Login Button -->
+                <button class="bg-gradient-to-r from-gray-600 to-gray-700 text-white px-3 py-1 rounded-lg hover:from-gray-700 hover:to-gray-800 transition-all duration-300 text-sm">
+                    <span>ورود</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-10"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center text-white">
+                <h2 class="text-5xl md:text-7xl font-bold mb-6 animate-float">
+                    🚗 قرعه کشی خودرو 🚗
+                </h2>
+                <p class="text-xl md:text-2xl mb-8 opacity-90">
+                    شانس خود را برای بردن خودروی رویایی‌تان امتحان کنید
+                </p>
+                <div class="flex justify-center space-x-reverse space-x-4 text-6xl animate-bounce-slow">
+                    <span class="car-icon">🚙</span>
+                    <span class="car-icon">🚗</span>
+                    <span class="car-icon">🚕</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Active Lottery Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                    قرعه کشی های فعال
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400 text-lg">
+                    در قرعه کشی های جاری شرکت کنید و شانس برنده شدن داشته باشید
+                </p>
+            </div>
+            
+            <!-- Lottery Card -->
+            <div class="max-w-4xl mx-auto">
+                <div class="lottery-card rounded-2xl shadow-2xl overflow-hidden card-hover relative">
+                    <div class="gradient-bg p-6 text-white relative z-10">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-reverse space-x-4">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=100&h=80&fit=crop&auto=format" 
+                                         alt="سمند" class="w-20 h-16 object-cover rounded-xl animate-float shadow-lg">
+                                    <div class="absolute -top-2 -right-2 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full">
+                                        جدید
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-2xl font-bold">قرعه کشی سمند EF7</h4>
+                                    <p class="opacity-90">مدل 1403 - صفر کیلومتر</p>
+                                    <div class="flex items-center space-x-reverse space-x-2 mt-1">
+                                        <span class="text-yellow-300">⭐⭐⭐⭐⭐</span>
+                                        <span class="text-sm opacity-75">محبوب ترین</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <div class="bg-white bg-opacity-20 rounded-xl p-4 backdrop-blur-sm">
+                                    <div class="text-3xl font-bold">200</div>
+                                    <div class="text-sm opacity-90">نفر ظرفیت</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-8">
+                        <div class="grid md:grid-cols-3 gap-6 mb-8">
+                            <!-- شرکت کنندگان -->
+                            <div class="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 rounded-xl">
+                                <div class="text-3xl mb-2">👥</div>
+                                <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">147</div>
+                                <div class="text-gray-600 dark:text-gray-400">شرکت کننده</div>
+                            </div>
+                            
+                            <!-- باقی مانده -->
+                            <div class="text-center p-6 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 rounded-xl">
+                                <div class="text-3xl mb-2">⏰</div>
+                                <div class="text-2xl font-bold text-green-600 dark:text-green-400">53</div>
+                                <div class="text-gray-600 dark:text-gray-400">سهم باقی مانده</div>
+                            </div>
+                            
+                            <!-- قیمت سهم -->
+                            <div class="text-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800 rounded-xl">
+                                <div class="text-3xl mb-2">💰</div>
+                                <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">200,000</div>
+                                <div class="text-gray-600 dark:text-gray-400">تومان هر سهم</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="mb-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">پیشرفت قرعه کشی</span>
+                                <span class="text-sm font-medium text-primary">73.5%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700 overflow-hidden">
+                                <div class="progress-bar h-4 rounded-full transition-all duration-1000" style="width: 73.5%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button class="flex-1 bg-gradient-to-r from-primary to-primary-dark text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-primary-dark hover:to-purple-700 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-2">
+                                <i class="fas fa-ticket-alt"></i>
+                                <span>خرید سهم</span>
+                            </button>
+                            <button class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-4 px-6 rounded-xl font-semibold text-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-2">
+                                <i class="fas fa-info-circle"></i>
+                                <span>جزئیات بیشتر</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 text-center">
+                <div class="p-6">
+                    <div class="text-4xl font-bold text-primary mb-2" id="totalParticipants">0</div>
+                    <div class="text-gray-600 dark:text-gray-400">کل شرکت کنندگان</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-4xl font-bold text-green-500 mb-2" id="totalWinners">0</div>
+                    <div class="text-gray-600 dark:text-gray-400">برندگان خوش شانس</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-4xl font-bold text-blue-500 mb-2" id="completedLotteries">0</div>
+                    <div class="text-gray-600 dark:text-gray-400">قرعه کشی برگزار شده</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-4xl font-bold text-purple-500 mb-2" id="activeLotteries">0</div>
+                    <div class="text-gray-600 dark:text-gray-400">قرعه کشی فعال</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h5 class="text-xl font-bold mb-4">قرعه کشی خودرو</h5>
+                    <p class="opacity-90">بهترین و معتبرترین سایت قرعه کشی خودرو در ایران</p>
+                </div>
+                <div>
+                    <h5 class="text-xl font-bold mb-4">تماس با ما</h5>
+                    <p class="opacity-90">برای اطلاعات بیشتر و پشتیبانی با ما تماس بگیرید</p>
+                    <p class="opacity-75 mt-2">تلفن: 021-12345678</p>
+                </div>
+                <div>
+                    <h5 class="text-xl font-bold mb-4">شبکه های اجتماعی</h5>
+                    <div class="flex space-x-reverse space-x-4">
+                        <a href="#" class="text-2xl hover:text-yellow-300 transition-colors"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="text-2xl hover:text-yellow-300 transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-2xl hover:text-yellow-300 transition-colors"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-white border-opacity-20 mt-8 pt-8 text-center opacity-75">
+                <p>&copy; 1403 قرعه کشی خودرو. تمامی حقوق محفوظ است.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Login functionality
+        document.querySelector('button').addEventListener('click', function() {
+            showLoginModal();
+        });
+
+        function showLoginModal() {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 animate-fadeIn">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold">ورود به پنل مدیریت</h3>
+                        <button onclick="this.closest('.fixed').remove()" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">نام کاربری</label>
+                            <input type="text" id="username" placeholder="نام کاربری را وارد کنید" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">رمز عبور</label>
+                            <input type="password" id="password" placeholder="رمز عبور را وارد کنید" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base">
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-reverse space-x-3 mt-6">
+                        <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                            انصراف
+                        </button>
+                        <button onclick="login()" class="bg-gradient-to-r from-primary to-primary-dark text-white px-6 py-2 rounded-lg hover:from-primary-dark hover:to-purple-700 transition-all duration-300">
+                            ورود
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === 'ahar123' && password === 'ahar123') {
+                window.location.href = 'admin.html';
+            } else {
+                showAlert('نام کاربری یا رمز عبور اشتباه است!', 'error');
+            }
+        }
+
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `fixed top-4 left-4 p-4 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-500 text-white' :
+                type === 'error' ? 'bg-red-500 text-white' :
+                'bg-blue-500 text-white'
+            }`;
+            alertDiv.textContent = message;
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+
+        // Load statistics from localStorage
+        function loadStats() {
+            const lotteries = JSON.parse(localStorage.getItem('lotteries') || '[]');
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+            
+            document.getElementById('activeLotteries').textContent = lotteries.filter(l => l.status === 'active').length;
+            document.getElementById('completedLotteries').textContent = lotteries.filter(l => l.status === 'completed').length;
+            document.getElementById('totalParticipants').textContent = participants.length;
+            document.getElementById('totalWinners').textContent = lotteries.filter(l => l.winner).length;
+        }
+
+        // Load lotteries and update display
+        function loadLotteries() {
+            const lotteries = JSON.parse(localStorage.getItem('lotteries') || '[]');
+            const activeLotteries = lotteries.filter(l => l.status === 'active');
+            
+            if (activeLotteries.length === 0) {
+                document.querySelector('.lottery-card').innerHTML = `
+                    <div class="p-12 text-center">
+                        <div class="text-6xl mb-4">🚗</div>
+                        <h3 class="text-2xl font-bold mb-4">هنوز قرعه کشی فعالی وجود ندارد</h3>
+                        <p class="text-gray-600 dark:text-gray-400">به زودی قرعه کشی‌های جدید اضافه خواهد شد</p>
+                    </div>
+                `;
+            } else {
+                // Display active lotteries
+                displayLotteries(activeLotteries);
+            }
+        }
+
+        function displayLotteries(lotteries) {
+            const container = document.querySelector('.lottery-card').parentElement;
+            container.innerHTML = '';
+            
+            lotteries.forEach(lottery => {
+                const participants = JSON.parse(localStorage.getItem('participants') || '[]')
+                    .filter(p => p.lotteryId === lottery.id);
+                
+                const progress = (participants.length / lottery.capacity) * 100;
+                
+                const lotteryCard = document.createElement('div');
+                lotteryCard.className = 'max-w-4xl mx-auto mb-8';
+                lotteryCard.innerHTML = `
+                    <div class="lottery-card rounded-2xl shadow-2xl overflow-hidden card-hover relative">
+                        <div class="gradient-bg p-6 text-white relative z-10">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-reverse space-x-4">
+                                    <div class="relative">
+                                        <img src="${lottery.image}" alt="${lottery.name}" class="w-20 h-16 object-cover rounded-xl animate-float shadow-lg">
+                                        <div class="absolute -top-2 -right-2 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full">
+                                            جدید
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-2xl font-bold">قرعه کشی ${lottery.name}</h4>
+                                        <p class="opacity-90">${lottery.description}</p>
+                                        <div class="flex items-center space-x-reverse space-x-2 mt-1">
+                                            <span class="text-yellow-300">⭐⭐⭐⭐⭐</span>
+                                            <span class="text-sm opacity-75">محبوب ترین</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="bg-white bg-opacity-20 rounded-xl p-4 backdrop-blur-sm">
+                                        <div class="text-3xl font-bold">${lottery.capacity}</div>
+                                        <div class="text-sm opacity-90">نفر ظرفیت</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-8">
+                            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                                <div class="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 rounded-xl">
+                                    <div class="text-3xl mb-2">👥</div>
+                                    <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">${participants.length}</div>
+                                    <div class="text-gray-600 dark:text-gray-400">شرکت کننده</div>
+                                </div>
+                                
+                                <div class="text-center p-6 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 rounded-xl">
+                                    <div class="text-3xl mb-2">⏰</div>
+                                    <div class="text-2xl font-bold text-green-600 dark:text-green-400">${lottery.capacity - participants.length}</div>
+                                    <div class="text-gray-600 dark:text-gray-400">سهم باقی مانده</div>
+                                </div>
+                                
+                                <div class="text-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800 rounded-xl">
+                                    <div class="text-3xl mb-2">💰</div>
+                                    <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">${lottery.pricePerShare.toLocaleString()}</div>
+                                    <div class="text-gray-600 dark:text-gray-400">تومان هر سهم</div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">پیشرفت قرعه کشی</span>
+                                    <span class="text-sm font-medium text-primary">${progress.toFixed(1)}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700 overflow-hidden">
+                                    <div class="progress-bar h-4 rounded-full transition-all duration-1000" style="width: ${progress}%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <button onclick="goToLottery('${lottery.id}')" class="flex-1 bg-gradient-to-r from-primary to-primary-dark text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-primary-dark hover:to-purple-700 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-2">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    <span>خرید سهم</span>
+                                </button>
+                                <button onclick="goToLottery('${lottery.id}')" class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-4 px-6 rounded-xl font-semibold text-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 flex items-center justify-center space-x-reverse space-x-2">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>جزئیات بیشتر</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(lotteryCard);
+            });
+        }
+
+        function goToLottery(lotteryId) {
+            window.location.href = `post.html?id=${lotteryId}`;
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            loadLotteries();
+        });
+
+        // Smooth animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card-hover').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
