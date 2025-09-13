@@ -341,6 +341,1032 @@
                             </h2>
                             <p class="text-gray-600 dark:text-gray-400">مدیریت و نمایش اطلاعات شرکت کنندگان</p>
                         </div>
+                        <button onclick="downloadParticipantsImage()" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 flex items-center space-x-reverse space-x-2">
+                            <i class="fas fa-download"></i>
+                            <span>دانلود تصویر</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Participants Table -->
+                <div class="admin-card rounded-xl shadow-lg overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">نام</th>
+                                    <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">شهر</th>
+                                    <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">قرعه کشی</th>
+                                    <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">شماره قرعه کشی</th>
+                                    <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">مبلغ پرداختی</th>
+                                    <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">تاریخ ثبت نام</th>
+                                </tr>
+                            </thead>
+                            <tbody id="participantsTableBody" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td colspan="6" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                                        هنوز شرکت کننده‌ای ثبت نام نکرده است
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="section hidden">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                        نتایج قرعه کشی
+                    </h2>
+                    <p class="text-gray-600 dark:text-gray-400">مشاهده و مدیریت نتایج قرعه کشی های برگزار شده</p>
+                </div>
+
+                <!-- Results Container -->
+                <div id="resultsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="admin-card p-6 rounded-xl shadow-lg text-center">
+                        <div class="text-6xl mb-4">🏆</div>
+                        <h3 class="text-xl font-bold mb-2">هنوز قرعه کشی برگزار نشده</h3>
+                        <p class="text-gray-600 dark:text-gray-400">پس از تکمیل ظرفیت، قرعه کشی برگزار خواهد شد</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings" class="section hidden">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                        تنظیمات سیستم
+                    </h2>
+                    <p class="text-gray-600 dark:text-gray-400">تنظیمات عمومی و پیکربندی سیستم</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- General Settings -->
+                    <div class="admin-card p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold mb-4">تنظیمات عمومی</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">نام سایت</label>
+                                <input type="text" value="قرعه کشی خودرو" class="input-focus w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">درصد کمیسیون</label>
+                                <input type="number" value="10" class="input-focus w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Settings -->
+                    <div class="admin-card p-6 rounded-xl shadow-lg">
+                        <h3 class="text-xl font-bold mb-4">تنظیمات پرداخت</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">درگاه پرداخت</label>
+                                <select class="input-focus w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base">
+                                    <option>زرین پال</option>
+                                    <option>پارسیان</option>
+                                    <option>ملت</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">شماره حساب</label>
+                                <input type="text" placeholder="6037-9919-xxxx-xxxx" class="input-focus w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <button class="bg-gradient-to-r from-primary to-primary-dark text-white px-8 py-3 rounded-lg hover:from-primary-dark hover:to-purple-700 transition-all duration-300">
+                        ذخیره تنظیمات
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Lottery Modal -->
+    <div id="addLotteryModal" class="hidden fixed inset-0 bg-black bg-opacity-50 modal flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-lg w-full mx-4 animate-fadeIn">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">افزودن قرعه کشی جدید</h3>
+                <button onclick="closeAddLotteryModal()" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">نام خودرو</label>
+                    <input type="text" id="carName" placeholder="مثال: پراید 131" class="input-focus w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">ظرفیت (تعداد شرکت کنندگان)</label>
+                        <input type="number" id="capacity" placeholder="200" class="input-focus w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">قیمت هر سهم (تومان)</label>
+                        <input type="number" id="pricePerShare" placeholder="200000" class="input-focus w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">لینک پرداخت</label>
+                    <input type="url" id="paymentLink" placeholder="https://zarinp.al/example" class="input-focus w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">تصویر خودرو</label>
+                    <div class="file-upload" onclick="document.getElementById('carImageFile').click()">
+                        <input type="file" id="carImageFile" accept="image/*" class="hidden">
+                        <div id="uploadArea">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-primary mb-2"></i>
+                            <p class="text-primary font-semibold">کلیک کنید یا فایل را بکشید</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">JPG, PNG یا WebP</p>
+                        </div>
+                        <div id="imagePreview" class="hidden">
+                            <img id="previewImg" class="w-full h-32 object-cover rounded-lg mb-2">
+                            <p class="text-sm text-green-600">تصویر آپلود شد ✓</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-2">توضیحات</label>
+                    <textarea id="description" placeholder="توضیحات خودرو..." rows="3" class="input-focus w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-base"></textarea>
+                </div>
+            </div>
+            
+            <div class="flex justify-end space-x-reverse space-x-3 mt-6">
+                <button onclick="closeAddLotteryModal()" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                    انصراف
+                </button>
+                <button onclick="addLottery()" class="bg-gradient-to-r from-primary to-primary-dark text-white px-6 py-2 rounded-lg hover:from-primary-dark hover:to-purple-700 transition-all duration-300">
+                    افزودن
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode detection
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        let selectedImageData = null;
+
+        // Image upload handling
+        function handleImageUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    selectedImageData = e.target.result;
+                    document.getElementById('previewImg').src = selectedImageData;
+                    document.getElementById('uploadArea').classList.add('hidden');
+                    document.getElementById('imagePreview').classList.remove('hidden');
+                    console.log('Image uploaded successfully');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Event listeners for file upload
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('carImageFile');
+            const uploadArea = document.querySelector('.file-upload');
+            
+            // File input change event
+            fileInput.addEventListener('change', function() {
+                handleImageUpload(this);
+            });
+            
+            // Drag and drop support
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight(e) {
+                uploadArea.classList.add('dragover');
+            }
+
+            function unhighlight(e) {
+                uploadArea.classList.remove('dragover');
+            }
+
+            uploadArea.addEventListener('drop', handleDrop, false);
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    handleImageUpload(fileInput);
+                }
+            }
+
+            // Initialize dashboard
+            document.querySelector('.nav-item').classList.add('active', 'bg-primary', 'text-white');
+            loadAdminStats();
+            loadLotteriesTable();
+            loadParticipantsTable();
+            loadRecentActivities();
+        });
+
+        // Navigation functions
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update navigation active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active', 'bg-primary', 'text-white');
+            });
+            event.target.closest('.nav-item').classList.add('active', 'bg-primary', 'text-white');
+        }
+
+        // Modal functions
+        function showAddLotteryModal() {
+            document.getElementById('addLotteryModal').classList.remove('hidden');
+        }
+
+        function closeAddLotteryModal() {
+            document.getElementById('addLotteryModal').classList.add('hidden');
+            // Clear form
+            document.getElementById('carName').value = '';
+            document.getElementById('capacity').value = '';
+            document.getElementById('pricePerShare').value = '';
+            document.getElementById('paymentLink').value = '';
+            document.getElementById('description').value = '';
+            selectedImageData = null;
+            document.getElementById('uploadArea').classList.remove('hidden');
+            document.getElementById('imagePreview').classList.add('hidden');
+        }
+
+        function addLottery() {
+            const carName = document.getElementById('carName').value.trim();
+            const capacity = parseInt(document.getElementById('capacity').value);
+            const pricePerShare = parseInt(document.getElementById('pricePerShare').value);
+            const paymentLink = document.getElementById('paymentLink').value.trim();
+            const description = document.getElementById('description').value.trim();
+
+            console.log('Form validation:', {
+                carName: carName,
+                capacity: capacity,
+                pricePerShare: pricePerShare,
+                paymentLink: paymentLink,
+                description: description,
+                hasImage: !!selectedImageData
+            });
+
+            // Check text fields
+            if (!carName) {
+                showAlert('لطفا نام خودرو را وارد کنید', 'error');
+                return;
+            }
+
+            if (!capacity || capacity <= 0) {
+                showAlert('لطفا ظرفیت معتبر وارد کنید', 'error');
+                return;
+            }
+
+            if (!pricePerShare || pricePerShare <= 0) {
+                showAlert('لطفا قیمت سهم معتبر وارد کنید', 'error');
+                return;
+            }
+
+            if (!paymentLink) {
+                showAlert('لطفا لینک پرداخت را وارد کنید', 'error');
+                return;
+            }
+
+            if (!description) {
+                showAlert('لطفا توضیحات را وارد کنید', 'error');
+                return;
+            }
+
+            // Check image
+            if (!selectedImageData) {
+                showAlert('لطفا تصویر خودرو را آپلود کنید', 'error');
+                return;
+            }
+
+            const lottery = {
+                id: Date.now().toString(),
+                name: carName,
+                capacity: capacity,
+                pricePerShare: pricePerShare,
+                paymentLink: paymentLink,
+                image: selectedImageData,
+                description: description,
+                status: 'active',
+                createdAt: new Date().toLocaleDateString('fa-IR')
+            };
+
+            // Save to localStorage
+            const lotteries = JSON.parse(localStorage.getItem('lotteries') || '[]');
+            lotteries.push(lottery);
+            localStorage.setItem('lotteries', JSON.stringify(lotteries));
+
+            // Save image to photo storage
+            saveImageToPhotos(lottery.id, selectedImageData);
+
+            closeAddLotteryModal();
+            showAlert('قرعه کشی جدید با موفقیت اضافه شد!', 'success');
+            
+            // Refresh displays
+            loadAdminStats();
+            loadLotteriesTable();
+            addActivity(`قرعه کشی ${carName} اضافه شد`);
+        }
+
+        function saveImageToPhotos(lotteryId, imageData) {
+            const photos = JSON.parse(localStorage.getItem('photos') || '{}');
+            photos[lotteryId] = imageData;
+            localStorage.setItem('photos', JSON.stringify(photos));
+        }
+
+        // Image Download function (Canvas-based table to image)
+        function downloadParticipantsImage() {
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+            const lotteries = JSON.parse(localStorage.getItem('lotteries') || '[]');
+            
+            if (participants.length === 0) {
+                showAlert('هیچ شرکت کننده‌ای برای دانلود وجود ندارد', 'error');
+                return;
+            }
+
+            // Create canvas
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            const rowHeight = 40;
+            const headerHeight = 50;
+            const padding = 20;
+            const colWidths = [150, 100, 150, 80, 120]; // Name, City, Lottery, Code, Date
+            const totalWidth = colWidths.reduce((sum, width) => sum + width, 0) + padding * 2;
+            const totalHeight = headerHeight + (participants.length * rowHeight) + padding * 2;
+            
+            canvas.width = totalWidth;
+            canvas.height = totalHeight;
+            
+            // Set background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, totalWidth, totalHeight);
+            
+            // Set font
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#000000';
+            
+            // Draw header
+            ctx.fillStyle = '#f8f9fa';
+            ctx.fillRect(padding, padding, totalWidth - padding * 2, headerHeight);
+            
+            ctx.fillStyle = '#333333';
+            ctx.font = 'bold 16px Arial';
+            
+            const headers = ['نام', 'شهر', 'قرعه کشی', 'کد', 'تاریخ'];
+            let headerX = padding;
+            headers.forEach((header, i) => {
+                ctx.fillText(header, headerX + colWidths[i] / 2, padding + 30);
+                headerX += colWidths[i];
+            });
+            
+            // Draw participants
+            ctx.font = '14px Arial';
+            participants.forEach((participant, index) => {
+                const lottery = lotteries.find(l => l.id === participant.lotteryId);
+                const yPos = padding + headerHeight + (index * rowHeight) + 25;
+                
+                // Alternate row background
+                if (index % 2 === 1) {
+                    ctx.fillStyle = '#f8f9fa';
+                    ctx.fillRect(padding, padding + headerHeight + (index * rowHeight), totalWidth - padding * 2, rowHeight);
+                }
+                
+                ctx.fillStyle = '#000000';
+                
+                const rowData = [
+                    `${participant.firstName} ${participant.lastName}`,
+                    participant.city,
+                    lottery ? lottery.name : 'نامشخص',
+                    participant.lotteryCode,
+                    participant.createdAt
+                ];
+                
+                let rowX = padding;
+                rowData.forEach((data, i) => {
+                    ctx.fillText(data, rowX + colWidths[i] / 2, yPos);
+                    rowX += colWidths[i];
+                });
+            });
+            
+            // Draw borders
+            ctx.strokeStyle = '#dee2e6';
+            ctx.lineWidth = 1;
+            
+            // Horizontal lines
+            for (let i = 0; i <= participants.length + 1; i++) {
+                const y = padding + (i === 0 ? 0 : headerHeight) + (i > 1 ? (i - 1) * rowHeight : 0);
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(totalWidth - padding, y);
+                ctx.stroke();
+            }
+            
+            // Vertical lines
+            let verticalX = padding;
+            for (let i = 0; i <= colWidths.length; i++) {
+                ctx.beginPath();
+                ctx.moveTo(verticalX, padding);
+                ctx.lineTo(verticalX, totalHeight - padding);
+                ctx.stroke();
+                if (i < colWidths.length) verticalX += colWidths[i];
+            }
+            
+            // Add title
+            ctx.fillStyle = '#333333';
+            ctx.font = 'bold 20px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('گزارش شرکت کنندگان قرعه کشی', totalWidth / 2, 30);
+            
+            // Download canvas as image
+            canvas.toBlob(function(blob) {
+                const link = document.createElement('a');
+                link.download = 'participants-report.png';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                URL.revokeObjectURL(link.href);
+            });
+            
+            showAlert('تصویر گزارش با موفقیت دانلود شد', 'success');
+        }
+
+        // Data loading functions
+        function loadAdminStats() {
+            const lotteries = JSON.parse(localStorage.getItem('lotteries') || '[]');
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+            
+            let totalRevenue = 0;
+            participants.forEach(p => {
+                const lottery = lotteries.find(l => l.id === p.lotteryId);
+                if (lottery) {
+                    totalRevenue += lottery.pricePerShare;
+                }
+            });
+
+            document.getElementById('adminTotalLotteries').textContent = lotteries.length;
+            document.getElementById('adminTotalParticipants').textContent = participants.length;
+            document.getElementById('adminTotalRevenue').textContent = totalRevenue.toLocaleString() + ' تومان';
+            document.getElementById('adminTotalWinners').textContent = lotteries.filter(l => l.winner).length;
+        }
+
+        function loadLotteriesTable() {
+            const lotteries = JSON.parse(localStorage.getItem('lotteries') || '[]');
+            const tbody = document.getElementById('lotteriesTableBody');
+            
+            if (lotteries.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                            هنوز قرعه کشی اضافه نشده است
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = lotteries.map(lottery => {
+                const participants = JSON.parse(localStorage.getItem('participants') || '[]')
+                    .filter(p => p.lotteryId === lottery.id);
+
+                return `
+                    <tr class="table-row">
+                        <td class="px-6 py-4">
+                            <img src="${lottery.image}" alt="${lottery.name}" class="w-12 h-10 object-cover rounded-lg">
+                        </td>
+                        <td class="px-6 py-4 font-semibold">${lottery.name}</td>
+                        <td class="px-6 py-4">${lottery.capacity} نفر</td>
+                        <td class="px-6 py-4 text-green-600 font-semibold">${lottery.pricePerShare.toLocaleString()} تومان</td>
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 text-xs rounded-full ${
+                                lottery.status === 'active' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' :
+                                lottery.status === 'completed' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300' :
+                                'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+                            }">
+                                ${lottery.status === 'active' ? 'فعال' : 
+                                  lottery.status === 'completed' ? 'تکمیل شده' : 'در انتظار'}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex space-x-reverse space-x-2">
+                                <button onclick="deleteLottery('${lottery.id}')" class="text-red-600 hover:text-red-800 transition-colors">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button onclick="viewLottery('${lottery.id}')" class="text-purple-600 hover:text-purple-800 transition-colors">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function loadParticipantsTable() {
+            const participants = JSON.parse(localStorage.getItem('participants') || '[]');
+            const lotteries = JSON.parse(localStorage.getItem('lotteries') || '[]');
+            const tbody = document.getElementById('participantsTableBody');
+            
+            if (participants.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                            هنوز شرکت کننده‌ای ثبت نام نکرده است
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = participants.map(participant => {
+                const lottery = lotteries.find(l => l.id === participant.lotteryId);
+                
+                return `
+                    <tr class="table-row">
+                        <td class="px-6 py-4 font-semibold">${participant.firstName} ${participant.lastName}</td>
+                        <td class="px-6 py-4">${participant.city}</td>
+                        <td class="px-6 py-4">${lottery ? lottery.name : 'نامشخص'}</td>
+                        <td class="px-6 py-4 font-bold text-primary">${participant.lotteryCode}</td>
+                        <td class="px-6 py-4 text-green-600 font-semibold">${lottery ? lottery.pricePerShare.toLocaleString() : '0'} تومان</td>
+                        <td class="px-6 py-4">${participant.createdAt}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function addActivity(activity) {
+            const activities = JSON.parse(localStorage.getItem('activities') || '[]');
+            activities.unshift({
+                text: activity,
+                time: new Date().toLocaleString('fa-IR'),
+                timestamp: Date.now()
+            });
+            
+            // Keep only last 10 activities
+            if (activities.length > 10) {
+                activities.splice(10);
+            }
+            
+            localStorage.setItem('activities', JSON.stringify(activities));
+            loadRecentActivities();
+        }
+
+        function loadRecentActivities() {
+            const activities = JSON.parse(localStorage.getItem('activities') || '[]');
+            const container = document.getElementById('recentActivities');
+            
+            if (activities.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center p-8 text-gray-500 dark:text-gray-400">
+                        هنوز فعالیتی ثبت نشده است
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = activities.map(activity => `
+                <div class="flex items-center justify-between p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <div class="flex items-center space-x-reverse space-x-3">
+                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-info text-white text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="font-semibold">${activity.text}</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">${activity.time}</p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteLottery(lotteryId) {
+            showConfirmDialog('آیا از حذف این قرعه کشی اطمینان دارید؟', () => {
+                let lotteries = JSON.parse(localStorage.getItem('lotteries') || '[]');
+                const lottery = lotteries.find(l => l.id === lotteryId);
+                
+                lotteries = lotteries.filter(l => l.id !== lotteryId);
+                localStorage.setItem('lotteries', JSON.stringify(lotteries));
+                
+                // Remove participants of this lottery
+                let participants = JSON.parse(localStorage.getItem('participants') || '[]');
+                participants = participants.filter(p => p.lotteryId !== lotteryId);
+                localStorage.setItem('participants', JSON.stringify(participants));
+
+                // Remove photo
+                const photos = JSON.parse(localStorage.getItem('photos') || '{}');
+                delete photos[lotteryId];
+                localStorage.setItem('photos', JSON.stringify(photos));
+
+                showAlert('قرعه کشی با موفقیت حذف شد', 'success');
+                loadAdminStats();
+                loadLotteriesTable();
+                loadParticipantsTable();
+                addActivity(`قرعه کشی ${lottery ? lottery.name : ''} حذف شد`);
+            });
+        }
+
+        function viewLottery(lotteryId) {
+            window.open(`post.html?id=${lotteryId}`, '_blank');
+        }
+
+        // Utility functions
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `fixed top-4 left-4 p-4 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-500 text-white' :
+                type === 'error' ? 'bg-red-500 text-white' :
+                'bg-blue-500 text-white'
+            } animate-slideIn`;
+            alertDiv.textContent = message;
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+
+        function goToHomePage() {
+            window.location.href = 'index.html';
+        }
+
+        function logout() {
+            showConfirmDialog('آیا از خروج از پنل مدیریت اطمینان دارید؟', () => {
+                window.location.href = 'index.html';
+            });
+        }
+
+        function showConfirmDialog(message, onConfirm) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">${message}</p>
+                    <div class="flex justify-end space-x-3">
+                        <button class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded" onclick="this.closest('.fixed').remove()">انصراف</button>
+                        <button class="px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded" onclick="this.closest('.fixed').remove(); (${onConfirm})()">تأیید</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+    </script>
+</body>
+</html>
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            50%, 100% { transform: translateX(100%); }
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark .glass-effect {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shine 3s infinite;
+        }
+        
+        .admin-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dark .admin-card {
+            background: linear-gradient(145deg, #1f2937 0%, #111827 100%);
+        }
+        
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(93, 92, 222, 0.15);
+        }
+        
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-hidden {
+            transform: translateX(-100%);
+        }
+        
+        .table-row:hover {
+            background: rgba(93, 92, 222, 0.05);
+        }
+        
+        .dark .table-row:hover {
+            background: rgba(93, 92, 222, 0.1);
+        }
+        
+        .modal {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .input-focus:focus {
+            border-color: #5D5CDE;
+            box-shadow: 0 0 0 3px rgba(93, 92, 222, 0.1);
+        }
+
+        .file-upload {
+            border: 2px dashed #5D5CDE;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-upload:hover {
+            background: rgba(93, 92, 222, 0.05);
+        }
+
+        .file-upload.dragover {
+            background: rgba(93, 92, 222, 0.1);
+            border-color: #4B4BC7;
+        }
+    </style>
+</head>
+<body class="font-vazir bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <!-- Header -->
+    <header class="glass-effect sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo & Title -->
+                <div class="flex items-center space-x-reverse space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center animate-pulse-slow">
+                        <i class="fas fa-user-shield text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                            پنل مدیریت
+                        </h1>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">سیستم مدیریت قرعه کشی خودرو</p>
+                    </div>
+                </div>
+                
+                <!-- User Info & Actions -->
+                <div class="flex items-center space-x-reverse space-x-4">
+                    <div class="hidden md:block text-center">
+                        <div class="text-sm text-gray-600 dark:text-gray-400">خوش آمدید</div>
+                        <div class="font-semibold">مدیر سیستم</div>
+                    </div>
+                    <button onclick="goToHomePage()" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 text-sm flex items-center space-x-reverse space-x-2">
+                        <i class="fas fa-home"></i>
+                        <span>صفحه اصلی</span>
+                    </button>
+                    <button onclick="logout()" class="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 text-sm flex items-center space-x-reverse space-x-2">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>خروج</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white dark:bg-gray-800 shadow-lg sidebar" id="sidebar">
+            <div class="p-6">
+                <nav class="space-y-2">
+                    <a href="#dashboard" onclick="showSection('dashboard')" class="flex items-center space-x-reverse space-x-3 p-3 rounded-lg hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer nav-item active">
+                        <i class="fas fa-chart-line text-lg"></i>
+                        <span>داشبورد</span>
+                    </a>
+                    <a href="#lotteries" onclick="showSection('lotteries')" class="flex items-center space-x-reverse space-x-3 p-3 rounded-lg hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer nav-item">
+                        <i class="fas fa-car text-lg"></i>
+                        <span>مدیریت قرعه کشی ها</span>
+                    </a>
+                    <a href="#participants" onclick="showSection('participants')" class="flex items-center space-x-reverse space-x-3 p-3 rounded-lg hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer nav-item">
+                        <i class="fas fa-users text-lg"></i>
+                        <span>شرکت کنندگان</span>
+                    </a>
+                    <a href="#results" onclick="showSection('results')" class="flex items-center space-x-reverse space-x-3 p-3 rounded-lg hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer nav-item">
+                        <i class="fas fa-trophy text-lg"></i>
+                        <span>نتایج قرعه کشی</span>
+                    </a>
+                    <a href="#settings" onclick="showSection('settings')" class="flex items-center space-x-reverse space-x-3 p-3 rounded-lg hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer nav-item">
+                        <i class="fas fa-cog text-lg"></i>
+                        <span>تنظیمات</span>
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="section active">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                        داشبورد مدیریت
+                    </h2>
+                    <p class="text-gray-600 dark:text-gray-400">نمای کلی از وضعیت سیستم قرعه کشی</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="admin-card p-6 rounded-xl shadow-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">کل قرعه کشی ها</p>
+                                <p class="text-3xl font-bold text-primary" id="adminTotalLotteries">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-car text-white text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-card p-6 rounded-xl shadow-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">شرکت کنندگان فعال</p>
+                                <p class="text-3xl font-bold text-green-500" id="adminTotalParticipants">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-users text-white text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-card p-6 rounded-xl shadow-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">درآمد کل</p>
+                                <p class="text-3xl font-bold text-purple-500" id="adminTotalRevenue">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-money-bill text-white text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-card p-6 rounded-xl shadow-lg">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">برندگان</p>
+                                <p class="text-3xl font-bold text-orange-500" id="adminTotalWinners">0</p>
+                            </div>
+                            <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-trophy text-white text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="admin-card p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-4 flex items-center space-x-reverse space-x-2">
+                        <i class="fas fa-clock text-primary"></i>
+                        <span>فعالیت های اخیر</span>
+                    </h3>
+                    <div id="recentActivities" class="space-y-4">
+                        <div class="text-center p-8 text-gray-500 dark:text-gray-400">
+                            هنوز فعالیتی ثبت نشده است
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lotteries Management Section -->
+            <div id="lotteries" class="section hidden">
+                <div class="mb-8">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                                مدیریت قرعه کشی ها
+                            </h2>
+                            <p class="text-gray-600 dark:text-gray-400">افزودن، ویرایش و مدیریت قرعه کشی های خودرو</p>
+                        </div>
+                        <button onclick="showAddLotteryModal()" class="bg-gradient-to-r from-primary to-primary-dark text-white px-6 py-3 rounded-lg hover:from-primary-dark hover:to-purple-700 transition-all duration-300 flex items-center space-x-reverse space-x-2">
+                            <i class="fas fa-plus"></i>
+                            <span>افزودن قرعه کشی جدید</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Lotteries Table -->
+                <div class="admin-card rounded-xl shadow-lg overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">تصویر</th>
+                                    <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">نام خودرو</th>
+                                    <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">ظرفیت</th>
+                                    <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">قیمت سهم</th>
+                                    <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">وضعیت</th>
+                                    <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lotteriesTableBody" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td colspan="6" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                                        هنوز قرعه کشی اضافه نشده است
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Participants Section -->
+            <div id="participants" class="section hidden">
+                <div class="mb-8">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h2 class="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                                شرکت کنندگان
+                            </h2>
+                            <p class="text-gray-600 dark:text-gray-400">مدیریت و نمایش اطلاعات شرکت کنندگان</p>
+                        </div>
                         <button onclick="downloadParticipantsPDF()" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg hover:from-green-600 hover:to-green-700 transition-all duration-300 flex items-center space-x-reverse space-x-2">
                             <i class="fas fa-download"></i>
                             <span>دانلود PDF</span>
